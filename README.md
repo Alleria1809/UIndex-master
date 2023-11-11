@@ -2,7 +2,7 @@
 
 ## UIndex-master is a one-stop website to provide comprehensive information to students who are suffering from the struggle to choose an ideal university.
 
-## [DEMO](https://drive.google.com/file/d/1JcsTpC_WUJZvZWy2qqZMCTb9vakr7lpk/view)
+## [DEMO](https://youtu.be/INMBVJv9y50)
 
 ![image](https://github.com/Alleria1809/UIndex-master/assets/97777827/5cee568a-fe51-47cf-b2e0-590287b12305)
 
