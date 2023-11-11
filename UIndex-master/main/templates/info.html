@@ -1,0 +1,1031 @@
+{% extends 'base.html' %}
+{% block title %}
+    Info Page
+{% endblock %}
+
+{% block content %}
+    <div class="position-relative overflow-hidden p-3 text-center">
+        <a href="{{ university_dict['link'] }}" target="_blank" class="display-3 font-futuraround-regular" style="text-decoration:none;">{{ university_dict['formal_name'] }}</a>
+    </div>
+
+
+    <br><br><br><br><br><br>
+    <div class="text-center">
+        <a class="font-futuraround-demi" style="color:#00A896;font-size:130%;" href="{{url_for('email_page')}}">
+            Require a compehensive analysis from our expert!
+        </a>
+    </div>
+
+
+    
+    <div style="height:20px"></div>
+    <div style="height:50px; width:67%; margin:0 auto;">
+        <p class="font-futuraround-bold" style="font-size:250%;">General</p>
+    </div>
+
+
+    <div class="contents-selector font-futuraround-medium" style="width:35%; margin:0 auto; font-size: 130%">
+        <table class="table border-primary text-center">
+            <tr>
+                <th>Overall</th>
+                <th>Safety</th>
+                <th>Convenience</th>
+                <th>Climate</th>
+                <th>Academic</th>
+            </tr>
+            <tr class="text-center">
+                <td>{{general_values[-1]}}</td>
+                <td>{{general_values[0]}}</td>
+                <td>{{general_values[3]}}</td>
+                <td>{{general_values[1]}}</td>
+                <td>{{general_values[2]}}</td>
+            </tr>
+
+        </table>
+    </div>
+
+
+
+    {#    The index point of all aspects of a university#}
+    <div id="contents-selector" style="padding-top: 20px; font-size:120%;">
+        <nav>
+            <ul class="about text-center">
+                <li >
+                    <span class="font-futuraround-bold">Location</span>
+                    <p class="text-center">{{ university_dict['location'] }}</p>
+                </li>
+                <li>
+                    <span class="font-futuraround-bold">rank</span>
+                    <p class="text-center">{{ university_dict['rank'] }}</p>
+                </li>
+
+                <li>
+                    <span class="font-futuraround-bold">Tuition</span>
+                    <p class="text-center">${{ university_dict['tuition_and_fees']}}</p>
+                </li>
+
+
+                <li>
+                    <span class="font-futuraround-bold"># of Undergrads</span>
+                    <p class="text-center">{{ university_dict['undergraduate_enrollment'] }}</p>
+                </li>
+                <li>
+                    <span class="font-futuraround-bold">Review Rating</span>
+                    <p class="text-center">{{ university_dict['rating_star'] }}/5</p>
+                </li>
+                <li>
+                    <span class="font-futuraround-bold">Recommend Rate</span>
+                    <p class="text-center">{{ university_dict['recommend_rate'] }}</p>
+                </li>
+                <li>
+                    <a href="{{ university_dict['review_link'] }}" class="font-futuraround-bold"># of Reviews</a>
+                    <p class="text-center">{{ rn }}</p>
+                </li>
+            </ul>
+        </nav>
+
+    </div>
+
+   <div class="row" style="width:70%; margin: 0 auto;">
+        <div class="col-6">
+            <canvas id="rankingChart" class="font-futuraround-demi" width="500" height="500" style="margin: 0 auto;"></canvas>
+            <script>
+                var ctx = document.getElementById("rankingChart").getContext("2d");
+                var radarChart = new Chart(ctx, {
+                    type: "radar",
+                    data:{
+                        labels: {{ general_labels | safe }},
+                        datasets: [
+                            {
+                                label: "Score",
+                                data: {{ general_values | safe }},
+                                fill: true,
+                                borderColor: "rgba(93, 172, 129, 0.8)",
+                            },
+                        ]
+                    },
+                    options: {
+                        scales:{
+                            r:{
+                                pointLabels:{
+                                    color: 'grey',
+                                    font:{
+                                        weight: 'bold',
+                                        family: 'Helvetica Neue'
+                                    }
+                                },
+                                suggestedMin:0,
+                                suggestedMax:100,
+                                ticks:{
+                                    display: false
+                                }
+                            }
+                        },
+                        // if false, use the size of the canvas
+                        responsive: false,
+                        plugins: {
+                            title: {
+                                display: true,
+                                color:'black',
+                                font:{
+                                    weight: 'bold',
+                                    size: 16,
+                                    family: 'Helvetica Neue'
+                                },
+                                text: 'University Index'
+                            },
+                            datalabels: {
+                                backgroundColor: function(context) {
+                                    return context.dataset.borderColor;
+                                },
+                                color: 'white',
+                                font: {
+                                    weight: 'bold'
+                                },
+                                formatter: Math.round,
+                                padding: 6,
+
+                            }
+                        },
+                    },
+                    plugins: [ChartDataLabels]
+                });
+            </script>
+        </div>
+
+        <div class="col-6" style="width:33% ; margin: 0 auto;" >
+            <div >
+                <img src="{{ url_for('static', filename='WordCloud.png') }}" alt="aaaa" width="500" height="500">
+            </div>
+            <br><br>
+
+        </div>
+    </div>
+
+
+    <div style="height:20px"></div>
+    <div style="width:65%; margin:0 auto;">
+        <div style="font-size:140%;">
+            <div class="row text-center font-futuraround-bold">Description</div>
+            <br><br>
+            <div class="row">
+                <p class="font-futuraround-regular">{{ desc_dict['description'] }}</p>
+            </div>
+        </div>
+    </div>
+
+    <div style="height:80px"></div>
+    <div style="height:70px; width:67%; margin:0 auto;">
+        <p class="font-futuraround-bold" style="font-size:250%;">Climate</p>
+    </div>
+
+
+    <div class="row" style="width:80%; margin:0 auto;">
+        <div class="col-7" style="height:200px; padding-left:100px; padding-top:60px">
+            <div>
+                <table class="table-bordered border-primary"
+                       style="width:100%; text-align:center; line-height: 1.2em; margin:auto;">
+
+                    <tbody>
+                    <tr>
+                        <th colspan="14" style="font-size:120%; height:80px; line-height:80px;" class="font-futuraround-demi">
+                            Climate data for {{ university_dict['formal_name'] }}
+                        </th>
+                    </tr>
+                    <tr style="height:40px; line-height:40px">
+                        <th scope="row" class="font-futuraround-regular">Month
+                        </th>
+                        <th scope="col" class="font-futuraround-regular">Jan
+                        </th>
+                        <th scope="col" class="font-futuraround-regular">Feb
+                        </th>
+                        <th scope="col" class="font-futuraround-regular">Mar
+                        </th>
+                        <th scope="col" class="font-futuraround-regular">Apr
+                        </th>
+                        <th scope="col" class="font-futuraround-regular">May
+                        </th>
+                        <th scope="col" class="font-futuraround-regular">Jun
+                        </th>
+                        <th scope="col" class="font-futuraround-regular">Jul
+                        </th>
+                        <th scope="col" class="font-futuraround-regular">Aug
+                        </th>
+                        <th scope="col" class="font-futuraround-regular">Sep
+                        </th>
+                        <th scope="col" class="font-futuraround-regular">Oct
+                        </th>
+                        <th scope="col" class="font-futuraround-regular">Nov
+                        </th>
+                        <th scope="col" class="font-futuraround-regular">Dec
+                        </th>
+                    </tr>
+                    <tr style="height:30px; line-height:30px">
+                        <th scope="row" class="font-futuraround-regular">Average high °F (°C)
+                        </th>
+                        <td style="background: {{ t(climate_dict['tmax_in_Jan']) }};" class="font-futuraround-medium">{{ climate_dict['tmax_in_Jan'] }}<br>({{ f(climate_dict['tmax_in_Jan']) }})
+                        </td>
+                        <td style="background: {{ t(climate_dict['tmax_in_Feb']) }};" class="font-futuraround-medium">{{ climate_dict['tmax_in_Feb'] }}<br>({{ f(climate_dict['tmax_in_Feb']) }})
+                        </td>
+                        <td style="background: {{ t(climate_dict['tmax_in_Mar']) }};" class="font-futuraround-medium">{{ climate_dict['tmax_in_Mar'] }}<br>({{ f(climate_dict['tmax_in_Mar']) }})
+                        </td>
+                        <td style="background: {{ t(climate_dict['tmax_in_Apr']) }};" class="font-futuraround-medium">{{ climate_dict['tmax_in_Apr'] }}<br>({{ f(climate_dict['tmax_in_Apr']) }})
+                        </td>
+                        <td style="background: {{ t(climate_dict['tmax_in_May']) }};" class="font-futuraround-medium">{{ climate_dict['tmax_in_May'] }}<br>({{ f(climate_dict['tmax_in_May']) }})
+                        </td>
+                        <td style="background: {{ t(climate_dict['tmax_in_June']) }};" class="font-futuraround-medium">{{ climate_dict['tmax_in_June'] }}<br>({{ f(climate_dict['tmax_in_June']) }})
+                        </td>
+                        <td style="background: {{ t(climate_dict['tmax_in_July']) }};" class="font-futuraround-medium">{{ climate_dict['tmax_in_July'] }}<br>({{ f(climate_dict['tmax_in_July']) }})
+                        </td>
+                        <td style="background: {{ t(climate_dict['tmax_in_Aug']) }};" class="font-futuraround-medium">{{ climate_dict['tmax_in_Aug'] }}<br>({{ f(climate_dict['tmax_in_Aug']) }})
+                        </td>
+                        <td style="background: {{ t(climate_dict['tmax_in_Sep']) }};" class="font-futuraround-medium">{{ climate_dict['tmax_in_Sep'] }}<br>({{ f(climate_dict['tmax_in_Sep']) }})
+                        </td>
+                        <td style="background: {{ t(climate_dict['tmax_in_Oct']) }};" class="font-futuraround-medium">{{ climate_dict['tmax_in_Oct'] }}<br>({{ f(climate_dict['tmax_in_Oct']) }})
+                        </td>
+                        <td style="background: {{ t(climate_dict['tmax_in_Nov']) }};" class="font-futuraround-medium">{{ climate_dict['tmax_in_Nov'] }}<br>({{ f(climate_dict['tmax_in_Nov']) }})
+                        </td>
+                        <td style="background: {{ t(climate_dict['tmax_in_Dec']) }};" class="font-futuraround-medium">{{ climate_dict['tmax_in_Dec'] }}<br>({{ f(climate_dict['tmax_in_Dec']) }})
+                        </td>
+                    </tr>
+                    <tr style="height:30px; line-height:30px">
+                        <th scope="row" class="font-futuraround-regular">Average low °f (°C)
+                        </th>
+                        <td style="background: {{ t(climate_dict['tmin_in_Jan']) }};" class="font-futuraround-medium">{{ climate_dict['tmin_in_Jan'] }}<br>({{ f(climate_dict['tmin_in_Jan']) }})
+                        </td>
+                        <td style="background: {{ t(climate_dict['tmin_in_Feb']) }};" class="font-futuraround-medium">{{ climate_dict['tmin_in_Feb'] }}<br>({{ f(climate_dict['tmin_in_Feb']) }})
+                        </td>
+                        <td style="background: {{ t(climate_dict['tmin_in_Mar']) }};" class="font-futuraround-medium">{{ climate_dict['tmin_in_Mar'] }}<br>({{ f(climate_dict['tmin_in_Mar']) }})
+                        </td>
+                        <td style="background: {{ t(climate_dict['tmin_in_Apr']) }};" class="font-futuraround-medium">{{ climate_dict['tmin_in_Apr'] }}<br>({{ f(climate_dict['tmin_in_Apr']) }})
+                        </td>
+                        <td style="background: {{ t(climate_dict['tmin_in_May']) }};" class="font-futuraround-medium">{{ climate_dict['tmin_in_May'] }}<br>({{ f(climate_dict['tmin_in_May']) }})
+                        </td>
+                        <td style="background: {{ t(climate_dict['tmin_in_June']) }};" class="font-futuraround-medium">{{ climate_dict['tmin_in_June'] }}<br>({{ f(climate_dict['tmin_in_June']) }})
+                        </td>
+                        <td style="background: {{ t(climate_dict['tmin_in_July']) }};" class="font-futuraround-medium">{{ climate_dict['tmin_in_July'] }}<br>({{ f(climate_dict['tmin_in_July']) }})
+                        </td>
+                        <td style="background: {{ t(climate_dict['tmin_in_Aug']) }};" class="font-futuraround-medium">{{ climate_dict['tmin_in_Aug'] }}<br>({{ f(climate_dict['tmin_in_Aug']) }})
+                        </td>
+                        <td style="background: {{ t(climate_dict['tmin_in_Sep']) }};" class="font-futuraround-medium">{{ climate_dict['tmin_in_Sep'] }}<br>({{ f(climate_dict['tmin_in_Sep']) }})
+                        </td>
+                        <td style="background: {{ t(climate_dict['tmin_in_Oct']) }};" class="font-futuraround-medium">{{ climate_dict['tmin_in_Oct'] }}<br>({{ f(climate_dict['tmin_in_Oct']) }})
+                        </td>
+                        <td style="background: {{ t(climate_dict['tmin_in_Nov']) }};" class="font-futuraround-medium">{{ climate_dict['tmin_in_Nov'] }}<br>({{ f(climate_dict['tmin_in_Nov']) }})
+                        </td>
+                        <td style="background: {{ t(climate_dict['tmin_in_Dec']) }};" class="font-futuraround-medium">{{ climate_dict['tmin_in_Dec'] }}<br>({{ f(climate_dict['tmin_in_Dec']) }})
+                        </td>
+                    </tr>
+                    <tr style="height:30px; line-height:30px">
+                        <th scope="row" class="font-futuraround-regular">Average precipitation inches (mm)
+                        </th>
+                        <td style="background: {{ p(climate_dict['pcp_in_Jan']) }}; color: {{ pC(climate_dict['pcp_in_Jan']) }}" class="font-futuraround-medium">{{ climate_dict['pcp_in_Jan'] }}<br>({{ i(climate_dict['pcp_in_Jan']) }})
+                        </td>
+                        <td style="background: {{ p(climate_dict['pcp_in_Feb']) }}; color: {{ pC(climate_dict['pcp_in_Feb']) }}" class="font-futuraround-medium">{{ climate_dict['pcp_in_Feb'] }}<br>({{ i(climate_dict['pcp_in_Feb']) }})
+                        </td>
+                        <td style="background: {{ p(climate_dict['pcp_in_Mar']) }}; color: {{ pC(climate_dict['pcp_in_Mar']) }}" class="font-futuraround-medium">{{ climate_dict['pcp_in_Mar'] }}<br>({{ i(climate_dict['pcp_in_Mar']) }})
+                        </td>
+                        <td style="background: {{ p(climate_dict['pcp_in_Apr']) }}; color: {{ pC(climate_dict['pcp_in_Apr']) }}" class="font-futuraround-medium">{{ climate_dict['pcp_in_Apr'] }}<br>({{ i(climate_dict['pcp_in_Apr']) }})
+                        </td>
+                        <td style="background: {{ p(climate_dict['pcp_in_May']) }}; color: {{ pC(climate_dict['pcp_in_May']) }}" class="font-futuraround-medium">{{ climate_dict['pcp_in_May'] }}<br>({{ i(climate_dict['pcp_in_May']) }})
+                        </td>
+                        <td style="background: {{ p(climate_dict['pcp_in_June']) }}; color: {{ pC(climate_dict['pcp_in_June']) }}" class="font-futuraround-medium">{{ climate_dict['pcp_in_June'] }}<br>({{ i(climate_dict['pcp_in_June']) }})
+                        </td>
+                        <td style="background: {{ p(climate_dict['pcp_in_July']) }}; color: {{ pC(climate_dict['pcp_in_July']) }}" class="font-futuraround-medium">{{ climate_dict['pcp_in_July'] }}<br>({{ i(climate_dict['pcp_in_July']) }})
+                        </td>
+                        <td style="background: {{ p(climate_dict['pcp_in_Aug']) }}; color: {{ pC(climate_dict['pcp_in_Aug']) }}" class="font-futuraround-medium">{{ climate_dict['pcp_in_Aug'] }}<br>({{ i(climate_dict['pcp_in_Aug']) }})
+                        </td>
+                        <td style="background: {{ p(climate_dict['pcp_in_Sep']) }}; color: {{ pC(climate_dict['pcp_in_Sep']) }}" class="font-futuraround-medium">{{ climate_dict['pcp_in_Sep'] }}<br>({{ i(climate_dict['pcp_in_Sep']) }})
+                        </td>
+                        <td style="background: {{ p(climate_dict['pcp_in_Oct']) }}; color: {{ pC(climate_dict['pcp_in_Oct']) }}" class="font-futuraround-medium">{{ climate_dict['pcp_in_Oct'] }}<br>({{ i(climate_dict['pcp_in_Oct']) }})
+                        </td>
+                        <td style="background: {{ p(climate_dict['pcp_in_Nov']) }}; color: {{ pC(climate_dict['pcp_in_Nov']) }}" class="font-futuraround-medium">{{ climate_dict['pcp_in_Nov'] }}<br>({{ i(climate_dict['pcp_in_Nov']) }})
+                        </td>
+                        <td style="background: {{ p(climate_dict['pcp_in_Dec']) }}; color: {{ pC(climate_dict['pcp_in_Dec']) }}" class="font-futuraround-medium">{{ climate_dict['pcp_in_Dec'] }}<br>({{ i(climate_dict['pcp_in_Dec']) }})
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="col-5">
+            {#  climate chart#}
+            <canvas id="climateChart" class="font-futuraround-demi" width="600" height="420" style="margin: 0 auto;"></canvas>
+            <script>
+                var ctx = document.getElementById("climateChart").getContext("2d");
+                var lineChart = new Chart(ctx, {
+                    data:{
+                        labels: {{ tempMax_labels | safe }},
+                        datasets: [
+                            {
+                                type: "line",
+                                label: "Average High °F",
+                                data: {{ tempMax_values | safe }},
+                                fill: false,
+                                borderColor: "#f4a261",
+                                lineTension: 0.3,
+                                datalabels:{
+                                    backgroundColor:"#f4a261",
+                                    borderRadius: 4,
+                                    color: 'white',
+                                    font:{
+                                        weight: 'bold'
+                                    },
+                                    formatter: Math.round,
+                                    padding: 4,
+                                    align: 'end',
+                                    anchor: 'end'
+                                }
+                            },
+                            {
+                                type: "line",
+                                label: "Average Low °F",
+                                data: {{ tempMin_values | safe }},
+                                fill: false,
+                                borderColor: "#2a9d8f",
+                                lineTension: 0.3,
+                                datalabels:{
+                                    backgroundColor:"#2a9d8f",
+                                    borderRadius: 4,
+                                    color: 'white',
+                                    font:{
+                                        weight: 'bold'
+                                    },
+                                    formatter: Math.round,
+                                    padding: 4,
+                                    align: 'start',
+                                    anchor: 'start'
+                                }
+                            },
+                            {
+                                type: "bar",
+                                label: "precipitation inches",
+                                data: {{ pcp_values | safe}},
+                                fill: false,
+                                backgroundColor: "rgba(129, 199, 212, 0.75)",
+                                yAxisID: 'y1',
+                                datalabels:{
+                                    display: false
+                                }
+                            }
+                        ]
+                    },
+                    options: {
+                        // if false, use the size of the canvas
+                        responsive: false,
+                        plugins: {
+                            title: {
+                                display: true,
+                                text: 'Climate Chart',
+                                color: "black",
+                                font:{
+                                    weight: 'bold'
+                                }
+                            },
+
+                        },
+                        scales:{
+                            y:{
+                                type: "linear",
+                                display: true,
+                                position: 'left',
+                            },
+                            y1:{
+                                type: "linear",
+                                display: true,
+                                position: 'right',
+                                grid: {
+                                    drawOnChartArea: false, // only want the grid lines for one axis to show up
+                                },
+                            }
+                        }
+                    },
+                    plugins: [ChartDataLabels]
+                });
+            </script>
+        </div>
+    </div>
+
+
+    <div style="height:60px"></div>
+    <div style="height:80px; width:67%; margin:0 auto;">
+        <p class="font-futuraround-bold" style="font-size:250%">Traffic & Commuting</p>
+    </div>
+
+
+    {#    Means of Commune table#}
+    <p class="text-center font-futuraround-demi" style="font-size:122%; height:25px">Means of Commune (%)</p>
+    <div class="row" style="width:80%; margin:0 auto;">
+        <div class="col-3"></div>
+        <div class="col-6">
+            <div>
+                <table class="table-bordered border-primary font-futuraround-regular"
+                       style="width:100%; text-align:center; line-height: 1.2em; margin:auto;">
+                    <tr>
+                        {% for key in trafficMeans_labels %}
+                            <th>{{ key }}</th>
+                        {% endfor %}
+                    </tr>
+                    <tr>
+                        {% for value in trafficMeans_values %}
+                            {% if value == maxTrafficMeans %}
+                                <td style="color:#ae2012" class="font-futuraround-bold">{{ value }}%</td>
+                            {% else %}
+                                <td class="font-futuraround-demi">{{ value }}%</td>
+                            {% endif %}
+                        {% endfor %}
+                    </tr>
+                </table>
+            </div>
+
+        </div>
+        <div class="col-3"></div>
+    </div>
+
+    <div style="height:50px"></div>
+
+    {#    traffic charts#}
+    <div class="row" style="width:75%; margin: 0 auto;">
+        <div class="col-6">
+            <canvas id="trafficDistChart" class="font-futuraround-demi" width="700" height="550" style="margin: 0 auto;"></canvas>
+            <script>
+                var ctx = document.getElementById("trafficDistChart").getContext("2d");
+                var lineChart = new Chart(ctx, {
+                    data: {
+                        labels: {{ trafficDist_labels | safe }},
+                        datasets: [
+                            {
+                                type: "bar",
+                                data: {{ trafficDist_values | safe }},
+                                backgroundColor: [
+                                    "#577590B3",
+                                    "#4d908eB3",
+                                    "#43aa8bB3",
+                                    "#90be6dB3",
+                                    "#f9c74fB3",
+                                    "#f8961eB3",
+                                    "#f3722cB3",
+                                    "#f94144B3",
+                                ],
+                                barThickness: 40,
+                            }
+                        ]
+                    },
+                    options: {
+                        scales:{
+                            x:{
+                                pointLabels:{
+                                    color: 'black',
+                                    font:{
+                                        weight: 'bold',
+                                        family: 'Helvetica Neue'
+                                    }
+                                },
+                            }
+                        },
+                        // if false, use the size of the canvas
+                        responsive: false,
+                        plugins: {
+                            title: {
+                                display: true,
+                                text: 'Avg. Traffic Distance by Means in km',
+                                color: "black",
+                                font:{
+                                    weight: 'bold',
+                                    size:15,
+                                    family: 'Helvetica Neue'
+                                }
+                            },
+                            legend: {
+                                display: false
+                            },
+                            datalabels: {
+                                anchor: 'end',
+                                align: 'end',
+                                font: {
+                                    weight: 'bold',
+
+                                }
+                            }
+                        }
+                    },
+                    plugins: [ChartDataLabels]
+                });
+            </script>
+        </div>
+
+
+        <div class="col-6">
+            <canvas id="trafficMeansChart" class="font-futuraround-demi" width="800" height="550" style="margin: 0 auto;"></canvas>
+            <script>
+                var ctx = document.getElementById("trafficMeansChart").getContext("2d");
+                var lineChart = new Chart(ctx, {
+                    type: "pie",
+                    data: {
+                        labels: {{ trafficMeans_labels | safe }},
+                        datasets: [
+                            {
+                                data: {{ trafficMeans_values | safe }},
+                                backgroundColor: [
+                                    "#577590B3",
+                                    "#4d908eB3",
+                                    "#43aa8bB3",
+                                    "#90be6dB3",
+                                    "#f9c74fB3",
+                                    "#f8961eB3",
+                                    "#f3722cB3",
+                                    "#f94144B3",
+                                ],
+                                datalabels:{
+                                    labels:{
+                                        name: {
+                                            color: 'white',
+                                            font: {
+                                                size: 12,
+                                                weight: 'bold'
+                                            },
+                                            formatter: function(value, ctx){
+                                                return ctx.chart.data.labels[ctx.dataIndex];
+                                            },
+                                        },
+                                    }
+                                },
+                            }
+                        ],
+
+                    },
+                    options: {
+                        // if false, use the size of the canvas
+                        responsive: false,
+                        plugins: {
+                            labels:{
+                                render: 'percentage',
+                                position: 'outside',
+                                fontStyle: 'bolder',
+                            },
+                            title: {
+                                display: true,
+                                text: '% of Traffic by means',
+                                color: "black",
+                                font:{
+                                    weight: 'bold',
+                                    size: 15,
+                                    family: 'Helvetica Neue'
+                                }
+                            },
+                        }
+                    },
+                    plugins: [ChartDataLabels]
+                });
+            </script>
+        </div>
+    </div>
+    {#    traffic charts#}
+
+
+    <div style="height:60px"></div>
+    <div style="height:50px; width:67%; margin:0 auto;">
+        <p class="font-futuraround-bold" style="font-size:250%">Safety</p>
+    </div>
+    <div style="height:50px"></div>
+
+
+
+    <div class="row" style="width:80%; margin:0 auto;">
+        <div class="col-6">
+            <canvas id="crimeTypeChart" class="font-futuraround-demi" width="800" height="550" style="margin: 0 auto;"></canvas>
+            <script>
+                var ctx = document.getElementById("crimeTypeChart").getContext("2d");
+                var radarChart = new Chart(ctx, {
+                    type: "radar",
+                    data: {
+                        labels: {{ crimeType_labels | safe }},
+                        datasets: [
+                            {
+                                label: "Score",
+                                data: {{crimeType_values | safe}},
+                                fill: true,
+                                borderColor: "#00A896B3",
+                            },
+                        ]
+                    },
+                    options: {
+                        scales:{
+                            r: {
+                                angleLines: {
+                                    display: true
+                                },
+                                pointLabels:{
+                                    color: 'grey',
+                                    font:{
+                                        weight: 'bold',
+                                        family: 'Helvetica Neue'
+                                    }
+                                },
+                                suggestedMin: 0,
+                                suggestedMax: 100,
+                                ticks:{
+                                    display: false
+                                }
+                            }
+                        },
+                        // if false, use the size of the canvas
+                        responsive: false,
+                        plugins: {
+                            title: {
+                                display: true,
+                                text: 'Crime Index by type: higher -> more dangerous',
+                                color: 'black',
+                                font:{
+                                    weight: 'bold',
+                                    size: 16,
+                                    family: 'Helvetica Neue'
+                                },
+
+                            },
+                            datalabels: {
+                                backgroundColor: function (context) {
+                                    return context.dataset.borderColor;
+                                },
+                                color: 'white',
+                                font: {
+                                    weight: 'bold'
+                                },
+                                formatter: Math.round,
+                                padding: 8
+                            },
+                        },
+                    },
+                    plugins: [ChartDataLabels]
+                });
+            </script>
+        </div>
+
+        <div class="col-6" style="margin: 0 auto;font-size: 120%;">
+            <p style="height:140px"></p>
+            <p class="text-center font-futuraround-bold">
+                A crime is defined as any act that is contrary to legal code or laws. In other words, crime and legality are social constructs that are fluid and change over time. There are many different types of crimes, from crimes against persons to victimless crimes and violent crimes to white collar crimes.
+            </p>
+            <br><br>
+            <p class="font-futuraround-regular">
+                <strong class="font-futuraround-demi">Crimes Against Persons:</strong> also called personal crimes, include murder, aggravated assault, rape, and robbery.
+            </p>
+            <br><br>
+            <p class="font-futuraround-regular">
+                <strong class="font-futuraround-demi">Crimes Against Property:</strong> involve the theft of property without bodily harm, such as burglary, larceny, auto theft, and arson.
+            </p>
+            <br><br>
+            <p class="font-futuraround-regular">
+                <strong class="font-futuraround-demi">Hate Crimes:</strong> crimes against persons or property that are committed while invoking prejudices of race, gender or gender identity, religion, disability, sexual orientation, or ethnicity.
+            </p>
+            <br><br>
+            <p class="font-futuraround-regular">
+                <strong class="font-futuraround-demi">Crimes Against Morality:</strong> also called victimless crimes because there is no complainant or victim. Prostitution, illegal gambling, and illegal drug use are all examples of victimless crimes.
+            </p>
+        </div>
+    </div>
+
+    <div style="height:100px"></div>
+
+    <div class="row" style="width:80%; margin:0 auto;">
+        <div class="col-4">
+            <div>
+                <table class="table-bordered border-primary font-futuraround-medium"
+                       style="width:100%; text-align:center; line-height: 1.5em; margin:0 auto;">
+                    <tr class="text-center" style="height:30px; line-height: 30px">
+                        <th>Worries of:</th>
+                        <th>Index</th>
+                        <th>Level</th>
+                    </tr>
+                    <tr class="text-center" style="height:25px; line-height: 25px">
+                        <th>Level of Overall Crime</th>
+                        <td style="background:{{ l(crime_dict['loc_level']) }}">{{ crime_dict['loc'] }}</td>
+                        <td style="background:{{ l(crime_dict['loc_level']) }}">{{ crime_dict['loc_level'] }}</td>
+                    </tr>
+                    <tr class="text-center" style="height:25px; line-height: 25px">
+                        <th>Crime increasing in the past 3 years</th>
+                        <td style="background:{{ l(crime_dict['ci_level']) }}">{{ crime_dict['ci'] }}</td>
+                        <td style="background:{{ l(crime_dict['ci_level']) }}">{{ crime_dict['ci_level'] }}</td>
+                    </tr>
+                    <tr class="text-center" style="height:25px; line-height: 25px">
+                        <th>Home Broken and Things Stolen</th>
+                        <td style="background:{{ l(crime_dict['whb_level']) }}">{{ crime_dict['whb'] }}</td>
+                        <td style="background:{{ l(crime_dict['whb_level']) }}">{{ crime_dict['whb_level'] }}</td>
+                    </tr>
+                    <tr class="text-center" style="height:25px; line-height: 25px">
+                        <th>Being Mugged or Robbed</th>
+                        <td style="background:{{ l(crime_dict['wbm_level']) }}">{{ crime_dict['wbm'] }}</td>
+                        <td style="background:{{ l(crime_dict['wbm_level']) }}">{{ crime_dict['wbm_level'] }}</td>
+                    </tr>
+                    <tr class="text-center" style="height:25px; line-height: 25px">
+                        <th>Car Stolen</th>
+                        <td style="background:{{ l(crime_dict['wcs_level']) }}">{{ crime_dict['wcs'] }}</td>
+                        <td style="background:{{ l(crime_dict['wcs_level']) }}">{{ crime_dict['wcs_level'] }}</td>
+                    </tr>
+                    <tr class="text-center" style="height:25px; line-height: 25px">
+                        <th>Things from Car Stolen</th>
+                        <td style="background:{{ l(crime_dict['wtc_level']) }}">{{ crime_dict['wtc'] }}</td>
+                        <td style="background:{{ l(crime_dict['wtc_level']) }}">{{ crime_dict['wtc_level'] }}</td>
+                    </tr>
+                    <tr class="text-center" style="height:25px; line-height: 25px">
+                        <th>Being Attacked</th>
+                        <td style="background:{{ l(crime_dict['wa_level']) }}">{{ crime_dict['wa'] }}</td>
+                        <td style="background:{{ l(crime_dict['wa_level']) }}">{{ crime_dict['wa_level'] }}</td>
+                    </tr>
+                    <tr class="text-center" style="height:25px; line-height: 25px">
+                        <th>Being Attecked due to race/gender/religion</th>
+                        <td style="background:{{ l(crime_dict['wbsc_level']) }}">{{ crime_dict['wbsc'] }}</td>
+                        <td style="background:{{ l(crime_dict['wbsc_level']) }}">{{ crime_dict['wbsc_level'] }}</td>
+                    </tr>
+                    <tr class="text-center" style="height:25px; line-height: 25px">
+                        <th>Being Insulted</th>
+                        <td style="background:{{ l(crime_dict['wbi_level']) }}">{{ crime_dict['wbi'] }}</td>
+                        <td style="background:{{ l(crime_dict['wbi_level']) }}">{{ crime_dict['wbi_level'] }}</td>
+                    </tr>
+                    <tr class="text-center" style="height:25px; line-height: 25px">
+                        <th>People using or dealing drugs</th>
+                        <td style="background:{{ l(crime_dict['dg_level']) }}">{{ crime_dict['dg'] }}</td>
+                        <td style="background:{{ l(crime_dict['dg_level']) }}">{{ crime_dict['dg_level'] }}</td>
+                    </tr>
+                    <tr class="text-center" style="height:25px; line-height: 25px">
+                        <th>Property Crime - Vandalism or Theft</th>
+                        <td style="background:{{ l(crime_dict['pc_level']) }}">{{ crime_dict['pc'] }}</td>
+                        <td style="background:{{ l(crime_dict['pc_level']) }}">{{ crime_dict['pc_level'] }}</td>
+                    </tr>
+                    <tr class="text-center" style="height:25px; line-height: 25px">
+                        <th>Assault or Armed Robbery</th>
+                        <td style="background:{{ l(crime_dict['pv_level']) }}">{{ crime_dict['pv'] }}</td>
+                        <td style="background:{{ l(crime_dict['pv_level']) }}">{{ crime_dict['pv_level'] }}</td>
+                    </tr>
+                    <tr class="text-center" style="height:25px; line-height: 25px">
+                        <th>Corruption and bribery</th>
+                        <td style="background:{{ l(crime_dict['pcb_level']) }}">{{ crime_dict['pcb'] }}</td>
+                        <td style="background:{{ l(crime_dict['pcb_level']) }}">{{ crime_dict['pcb_level'] }}</td>
+                    </tr>
+                    <tr class="text-center" style="height:25px; line-height: 25px">
+                        <th>Safety Walking during Daylight</th>
+                        <td style="background:{{ wl(crime_dict['sd_level']) }}">{{ crime_dict['sd'] }}</td>
+                        <td style="background:{{ wl(crime_dict['sd_level']) }}">{{ crime_dict['sd_level'] }}</td>
+                    </tr>
+                    <tr class="text-center" style="height:25px; line-height: 25px">
+                        <th>Safety Walking during Night</th>
+                        <td style="background:{{ wl(crime_dict['sn_level']) }}">{{ crime_dict['sn'] }}</td>
+                        <td style="background:{{ wl(crime_dict['sn_level']) }}">{{ crime_dict['sn_level'] }}</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+
+        <div class="col-5">
+            <canvas id="crimeChart" class="font-futuraround-demi" width="750" height="550" style="margin:0 auto;"></canvas>
+            <script>
+                var ctx = document.getElementById("crimeChart").getContext("2d");
+                var lineChart = new Chart(ctx, {
+                    data: {
+                        labels: {{ crime_labels | safe }},
+                        datasets: [
+                            {
+                                label: 'level of crime',
+                                type: 'line',
+                                data:{{ crime_levels | safe }},
+                                borderColor: 'white',
+                                backgroundColor: 'white',
+                                yAxisID: 'y2',
+                                lineTension: 0.3,
+                                datalabels:{
+                                    display:false
+                                }
+                            },
+                            {
+                                label: 'crime index',
+                                type: "bar",
+                                data: {{ crime_values | safe }},
+                                backgroundColor: [
+                                    "#05668D",
+                                    "#028090",
+                                    "#004896",
+                                    "#02C39A",
+                                    "#F0F3BD",
+                                    "#014D63",
+                                    // "rgba(87,42,63, 0.8)",
+                                ],
+                                datalabels:{
+                                    anchor: 'end',
+                                    align:'end',
+                                    color: 'black',
+                                    font:{
+                                        weight: 'bold'
+                                    },
+                                    formatter: Math.round,
+                                },
+                                legend: {
+                                    display: true
+                                },
+                            },
+                            {
+                                label: 'avg. crime index',
+                                type: "bar",
+                                data: {{ avg_crime_list | safe }},
+                                backgroundColor: [
+                                    "#a5907e94",
+                                    // "rgba(87,42,63, 0.8)",
+                                ],
+                                datalabels:{
+                                    anchor: 'end',
+                                    align:'end',
+                                    color: 'black',
+                                    font:{
+                                        weight: 'bold'
+                                    },
+                                    formatter: Math.round,
+                                },
+                                legend: {
+                                    display: true
+                                },
+                            },
+
+                        ]
+                    },
+                    options: {
+                        barValueSpacing: 20,
+                        scales:{
+                            x:{
+                                ticks:{
+                                    color:'black'
+                                }
+                            },
+                            y: {
+                                ticks:{
+                                    color:'black'
+                                },
+                                type: 'linear',
+                                position: 'left',
+                                grid: {
+                                    borderColor: 'grey'
+                                },
+                                color: 'black',
+                                font:{
+                                    weight: 'bold'
+                                },
+                                suggestedMin: 0,
+                                suggestedMax: 100
+                            },
+                            y2: {
+                                ticks:{
+                                    color:'black'
+                                },
+                                type: 'category',
+                                labels: ['Very High', 'High', 'Moderate', 'Low', 'Very Low'],
+                                offset: true,
+                                position: 'right',
+                                grid: {
+                                    borderColor: 'darkblue',
+                                    drawOnChartArea: false, // only want the grid lines for one axis to show up
+                                }
+                            }
+                        },
+                        // if false, use the size of the canvas
+                        responsive: false,
+                        plugins: {
+                            title: {
+                                display: true,
+                                text: 'Risk of Crime by category',
+                                color: "black",
+                                font:{
+                                    weight: 'bold'
+                                }
+                            },
+                            legend: {
+                                display: true
+                            },
+                        }
+                    },
+                    plugins: [ChartDataLabels]
+                });
+            </script>
+        </div>
+
+        <div class="col-2">
+            <canvas id="walkingChart" class="font-futuraround-demi" width="350" height="500" style="margin:0 auto;"></canvas>
+            <script>
+                var ctx = document.getElementById("walkingChart").getContext("2d");
+                var lineChart = new Chart(ctx, {
+                    data: {
+                        labels: {{ walking_labels | safe }},
+                        datasets: [
+                            {
+                                label: 'level of safety',
+                                type: 'line',
+                                data:{{ walking_levels | safe }},
+                                borderColor: 'white',
+                                backgroundColor: 'white',
+                                yAxisID: 'y2',
+                                lineTension: 0.3,
+                                datalabels:{
+                                    display:false
+                                }
+                            },
+                            {
+                                label: 'walking safety Index',
+                                type: "bar",
+                                data: {{ walking_values | safe }},
+                                backgroundColor: [
+                                    "#028090",
+                                    "#00A896",
+                                ],
+                                datalabels:{
+                                    anchor: 'end',
+                                    align:'end',
+                                    color: 'black',
+                                    font:{
+                                        weight: 'bold'
+                                    },
+                                    formatter: Math.round
+                                }
+                            },
+                            {
+                                label: 'avg. safety Index',
+                                type: "bar",
+                                data: {{ avg_walking_list | safe }},
+                                backgroundColor: [
+                                     "#a5907e94"
+                                ],
+                                datalabels:{
+                                    anchor: 'end',
+                                    align:'end',
+                                    color: 'black',
+                                    font:{
+                                        weight: 'bold'
+                                    },
+                                    formatter: Math.round
+                                }
+                            },
+
+                        ]
+                    },
+                    options: {
+                        scales:{
+                            x:{
+                                ticks:{
+                                    color:'black'
+                                }
+                            },
+                            y: {
+                                type: 'linear',
+                                position: 'left',
+                                grid: {
+                                    borderColor: 'grey'
+                                },
+                                color: 'black',
+                                font:{
+                                    weight: 'bold',
+                                },
+                                suggestedMin: 0,
+                                suggestedMax: 100,
+                                ticks:{
+                                    color:'black'
+                                }
+                            },
+                            y2: {
+                                type: 'category',
+                                labels: ['Very High', 'High', 'Moderate', 'Low', 'Very Low'],
+                                offset: true,
+                                position: 'right',
+                                grid: {
+                                    borderColor: 'darkblue',
+                                    drawOnChartArea: false, // only want the grid lines for one axis to show up
+                                },
+                                ticks:{
+                                    color:'black'
+                                }
+                            }
+                        },
+                        // if false, use the size of the canvas
+                        responsive: false,
+                        plugins: {
+                            title: {
+                                display: true,
+                                text: 'Safety of Walking',
+                                color: "black",
+                                font:{
+                                    weight: 'bold'
+                                }
+                            },
+                        }
+                    },
+                    plugins: [ChartDataLabels]
+                });
+            </script>
+        </div>
+    </div>
+
+    <div style="height:100px"></div>
+    <div class="text-center" >
+        <a class="font-futuraround-demi" style="font-size:150%;" href="{{url_for('download_data',filename='detailed_data.csv')}}">Download the detailed information (.CSV)</a>
+        <br><br>
+        <br>
+
+    </div>
+
+{% endblock %}

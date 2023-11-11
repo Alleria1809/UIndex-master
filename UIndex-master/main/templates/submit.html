@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block title %}
+    Home Page
+{% endblock %}
+
+{% block content %}
+    <div style="height:150px;"></div>
+    <div class="position-relative overflow-hidden p-3 text-center" style="height:500px; padding-top:200px;">
+        <h1 class="text-center title display-4">UNIVERSITY INDEX</h1>
+        <br><br>
+        <p class="font-futuraround-demi">Your Dream starts from below...</p>
+        <br><br>
+        <br>
+        <h3 class="font-futuraround-bold" style="font-size:130%;">Your request has been received! Please check your email. We will contact you as soon as possible!</h3>
+        <br><br>
+        <a href="{{url_for('home_page')}}" class="font-futuraround-regular btn btn-sm2 btn-success" style="font-size:125%">Home</a>
+        </div>
+{% endblock %}

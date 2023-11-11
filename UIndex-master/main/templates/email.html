@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% block title %}
+    Home Page
+{% endblock %}
+
+{% block content %}
+    <div style="height:150px;"></div>
+    <div class="position-relative overflow-hidden p-3 text-center" style="height:500px; padding-top:200px;">
+        <h1 class="text-center title display-4">UNIVERSITY INDEX</h1>
+        <br><br><br><br>
+        <p class="font-futuraround-demi" style="font-size:120%">Please Enter you email address to let an expert contact you</p>
+        <br><br>
+        <div class="container" style="width: 630px;" >
+            <form method="POST">
+{#                <h3 class="font-futuraround-bold" style="font-size:150%;">Please provide an email for us to contact you</h3>#}
+{#                <br>#}
+{#                <label class="font-futuraround-bold" style="font-size:150%;">Email address: </label>#}
+{#                <input class="input" type="text" name="email" placeholder="Email"/>#}
+{#                <br><br>#}
+{#                    #}
+{#                <br><br>#}
+{#                <div class="btn btn-sm2 btn-success">#}
+{#                    <input type="submit"  value="Submit" >#}
+{#                </div>#}
+                {{ form.hidden_tag() }}
+                <div style="width:75%; margin:0 auto">
+                    {{ form.email(class="form-control", placeholder="Email Address") }}
+                </div>
+
+                <br><br>
+                <img src="https://www.svgrepo.com/show/113460/mail-sent.svg" width="30" height="30" srcset="https://www.svgrepo.com/show/113460/mail-sent.svg 4x" alt="Mail Sent SVG Vector" title="Mail Sent SVG Vector">
+                <br>
+                <br>
+                {{ form.submit(class="btn btn-sm2  btn-success")}}
+                </form>
+        </div>
+    </div>
+{% endblock %}
